@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+   dbos:
+     image: mysql:5.7
+     volumes: 
+       - mysql_storage_n:/var/lib/mysql 
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: devops 
+       MYSQL_USER: vanshika 
+       MYSQL_PASSWORD: devop 
+       MYSQL_DATABASE: mydb 
+   wpos:
+    image: wordpress:5.1.1-php7.3-apache
+    restart: always
+    depends_on:
+      - dbos
+    ports:
+      - 8081:80
+               
+    environment:
+      WORDPRESS_DB_HOST: dbos
+      WORDPRESS_DB_USER: vanshika 
+      WORDPRESS_DB_PASSWORD: devop 
+      WORDPRESS_DB_NAME: mydb 
+    volumes:
+      - wp_storage_n:/var/www/html
+volumes:
+        wp_storage_n:
+        mysql_storage_n:
